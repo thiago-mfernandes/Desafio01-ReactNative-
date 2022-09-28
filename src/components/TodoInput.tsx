@@ -7,10 +7,18 @@ interface TodoInputProps {
 }
 
 export function TodoInput({ addTask }: TodoInputProps) {
-  // const [task, setTask] = useState('');
+  const [task, setTask] = useState('');
 
-  function handleAddNewTask() {
+  function handleAddNewTask() {    
     //TODO - Call addTask if task not empty and clean input value 
+    if(!task) return console.log('O preenchimento é obrigatório');
+    // 3.uma vez setado o valor, repasso para o estado superior meu valor chamando addTask que veio por props, e limpo o estado 
+    addTask(task);
+    cleanInput();
+  }
+
+  function cleanInput() {
+    setTask('');
   }
 
   return (
@@ -21,6 +29,13 @@ export function TodoInput({ addTask }: TodoInputProps) {
         placeholderTextColor="#B2B2B2"
         returnKeyType="send"
         selectionColor="#666666"
+        // 1.meu value passa a ser task, vou apenas receber a task
+        value={task}
+        // 2.no reacet-native, onChangeText... setar o valor no estado
+        onChangeText={setTask}
+
+        //onSubmitEditing, é a prop de quando abre o teclado e o usuario clica no "enter"
+        onSubmitEditing={handleAddNewTask}
         //TODO - use value, onChangeText and onSubmitEditing props
       />
       <TouchableOpacity
@@ -28,6 +43,7 @@ export function TodoInput({ addTask }: TodoInputProps) {
         activeOpacity={0.7}
         style={styles.addButton}
         //TODO - onPress prop
+        onPress={handleAddNewTask}
       >
         <Icon name="chevron-right" size={24} color="#B2B2B2" />
       </TouchableOpacity>
